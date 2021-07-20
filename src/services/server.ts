@@ -1,21 +1,21 @@
 import  express  from "express"
 import { Express } from "express"
-import { controller, serviceController } from "./common/controller"
+import { Controller, ServiceController } from "./common/controller"
 import { HTTP_METHODS } from "./catalog/catalog"
 
 export class expressServer {
     app : Express
-    port : String
+    port : string
     ready : boolean
 
-    constructor(port : String){
+    constructor(port : string){
         this.ready = false
         this.port = port
         this.app = express()
         this.app.use(express.urlencoded({extended : false}) , express.json({limit : "10mb"}))
     }
 
-    setup(...controllers :  Array<serviceController & controller>){
+    setup(...controllers :  Array<ServiceController & Controller>){
         for(const controller of controllers){
             let service_controller = express.Router()
         

@@ -1,8 +1,8 @@
-import {controller, serviceController} from "../common/controller"
+import {Controller, ServiceController} from "../common/controller"
 import {Request, Response} from "express"
 import { HTTP_METHODS } from "../catalog/catalog"
 
-export class clientController extends serviceController implements controller{
+export class ClientController extends ServiceController implements Controller{
 
     private getClients(req : Request,res : Response){
         res.status(200).json({ msg : "getting all clients"})

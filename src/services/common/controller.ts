@@ -1,18 +1,18 @@
 import {Request, Response} from "express"
 
-export interface endpoint {
+export interface Endpoint {
     path : string
     httpMethod : string
     handler : (req : Request, res : Response) => void
 }
 
-export interface controller{
-    exportEndpoints() : Array<endpoint>
+export interface Controller{
+    exportEndpoints() : Array<Endpoint>
 }
 
-export class serviceController
+export class ServiceController
 {
-    endpoints : Array<endpoint>
+    endpoints : Array<Endpoint>
     prefix : string
     
     constructor(prefix : string){
