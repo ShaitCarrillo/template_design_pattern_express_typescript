@@ -2,22 +2,32 @@ import  express  from "express"
 import { Express } from "express"
 import { Controller, ServiceController } from "./common/controller"
 import { HTTP_METHODS } from "./catalog/catalog"
+import { EnvParam } from "./common/interfaces"
 
 export class expressServer {
     app : Express
     port : string
     ready : boolean
 
-    constructor(port : string){
+    constructor(port : string, ...envParams : Array<EnvParam>){
         this.ready = false
         this.port = port
         this.app = express()
         this.app.use(express.urlencoded({extended : false}) , express.json({limit : "10mb"}))
+
+        for(const envParam of envParams){
+            process.env[envParam.key] = envParam.value
+        }
     }
 
     setup(...controllers :  Array<ServiceController & Controller>){
         for(const controller of controllers){
+
             let service_controller = express.Router()
+
+            if(controller.middleware != undefined){
+                service_controller.use(controller.middleware)
+            }
         
             for(let service of controller.exportEndpoints()){
                 switch(service.httpMethod.toUpperCase()){
@@ -31,6 +41,8 @@ export class expressServer {
                         break
                 }
             }
+
+
             this.app.use(controller.prefix, service_controller)
         }
 
