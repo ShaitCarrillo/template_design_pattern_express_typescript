@@ -1,9 +1,10 @@
 import {Request, Response} from "express"
+import {Middleware,  EndpointHandler} from "./interfaces"
 
 export interface Endpoint {
     path : string
     httpMethod : string
-    handler : (req : Request, res : Response) => void
+    handler : EndpointHandler
 }
 
 export interface Controller{
@@ -14,9 +15,9 @@ export class ServiceController
 {
     endpoints : Array<Endpoint>
     prefix : string
-    middleware : ((req: Request, res: Response, next: () => void) => void) | undefined
+    middleware : Middleware | undefined
     
-    constructor(prefix : string, middleware? : ((req: Request, res: Response, next: () => void) => void)){
+    constructor(prefix : string, middleware? : Middleware){
         this.prefix = prefix
         this.endpoints = new Array()
 
